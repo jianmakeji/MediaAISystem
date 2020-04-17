@@ -1,13 +1,9 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const BaseController = require('./BaseController');
 const ImagerecogClient = require('@alicloud/imagerecog-2019-09-30');
 
-class RecognizeController extends Controller {
-  async index() {
-    const { ctx } = this;
-    ctx.body = 'hi, egg';
-  }
+class RecognizeController extends BaseController {
 
   /*
   中国风：chinese
@@ -39,16 +35,29 @@ class RecognizeController extends Controller {
       endpoint: 'https://imagerecog.cn-shanghai.aliyuncs.com'
     });
 
-    await client.recognizeImageStyle({
-        "Url": "https://media-ai-system.oss-cn-shanghai.aliyuncs.com/20200228110752.png?Expires=1582859594&OSSAccessKeyId=TMP.hhbiTs7PEvPrzAhqpr76ieQvSeqM9iGQNNJGoer6pMaH8F9pVtSWpbvZkDAdtid6H4cXPGxsJSaUxyb9tMc7w4oBsF5hvDYpKdzrDpao8BRA7aQvSuv2q2tx3hfyB5.tmp&Signature=jo38AOu1eCpbWSccBZ5xj9yMZiA%3D"
+    let result = await client.recognizeImageStyle({
+        "Url": ctx.query.imageUrl,
     }, {timeout: 10000}).then(function (data) {
-      console.log('Result:' + JSON.stringify(data));
-      ctx.body = JSON.stringify(data);
+      return data;
     }, function (err) {
-      console.log('Error:' + err);
-      ctx.body = err;
-
+      return err;
     });
+
+    if(result.Data.Styles){
+      if(result.Data.Styles.length > 0){
+        let stylesCnName = [];
+        result.Data.Styles.forEach((enName)=>{
+          stylesCnName.push(ctx.helper.getStyleKeyName(enName));
+        });
+        super.success(stylesCnName);
+      }
+      else{
+        super.failure('无风格信息');
+      }
+    }
+    else{
+      super.failure('识别出错');
+    }
   }
 
   /*
@@ -92,17 +101,28 @@ class RecognizeController extends Controller {
       endpoint: 'https://imagerecog.cn-shanghai.aliyuncs.com'
     });
 
-    await client.taggingImage({
-        "ImageURL": "https://media-ai-system.oss-cn-shanghai.aliyuncs.com/20200228110752.png?Expires=1582859976&OSSAccessKeyId=TMP.hhbiTs7PEvPrzAhqpr76ieQvSeqM9iGQNNJGoer6pMaH8F9pVtSWpbvZkDAdtid6H4cXPGxsJSaUxyb9tMc7w4oBsF5hvDYpKdzrDpao8BRA7aQvSuv2q2tx3hfyB5.tmp&Signature=4t6MbHaG%2B5YFUDDT5aHkhqMLK3Y%3D"
+    let result = await client.taggingImage({
+        "ImageURL": ctx.query.imageUrl
     }, {timeout: 10000}).then(function (data) {
-      console.log('Result:' + JSON.stringify(data));
-      ctx.body = JSON.stringify(data);
+        return data;
     }, function (err) {
-      console.log('Error:' + err);
-      ctx.body = err;
-
+        return err;
     });
+    if(result.Data.Tags){
+      if(result.Data.Tags.length > 0){
+        super.success(result.Data.Tags);
+      }
+      else{
+        super.failure('无标签信息');
+      }
+    }
+    else{
+      super.failure('识别出错');
+    }
+
   }
+
+
 
   /*
   {
@@ -144,16 +164,24 @@ class RecognizeController extends Controller {
       endpoint: 'https://imagerecog.cn-shanghai.aliyuncs.com'
     });
 
-    await client.recognizeScene({
-        "ImageURL": "https://media-ai-system.oss-cn-shanghai.aliyuncs.com/20200228110752.png?Expires=1582859976&OSSAccessKeyId=TMP.hhbiTs7PEvPrzAhqpr76ieQvSeqM9iGQNNJGoer6pMaH8F9pVtSWpbvZkDAdtid6H4cXPGxsJSaUxyb9tMc7w4oBsF5hvDYpKdzrDpao8BRA7aQvSuv2q2tx3hfyB5.tmp&Signature=4t6MbHaG%2B5YFUDDT5aHkhqMLK3Y%3D"
+    let result = await client.recognizeScene({
+        "ImageURL": ctx.query.imageUrl
     }, {timeout: 10000}).then(function (data) {
-      console.log('Result:' + JSON.stringify(data));
-      ctx.body = JSON.stringify(data);
+        return data;
     }, function (err) {
-      console.log('Error:' + err);
-      ctx.body = err;
-
+        return err;
     });
+    if(result.Data.Tags){
+      if(result.Data.Tags.length > 0){
+        super.success(result.Data.Tags);
+      }
+      else{
+        super.failure('无标签信息');
+      }
+    }
+    else{
+      super.failure('识别出错');
+    }
   }
 
   /*
@@ -192,16 +220,28 @@ class RecognizeController extends Controller {
       endpoint: 'https://imagerecog.cn-shanghai.aliyuncs.com'
     });
 
-    await client.recognizeImageColor({
-        "Url": "https://media-ai-system.oss-cn-shanghai.aliyuncs.com/20200228110752.png?Expires=1582859594&OSSAccessKeyId=TMP.hhbiTs7PEvPrzAhqpr76ieQvSeqM9iGQNNJGoer6pMaH8F9pVtSWpbvZkDAdtid6H4cXPGxsJSaUxyb9tMc7w4oBsF5hvDYpKdzrDpao8BRA7aQvSuv2q2tx3hfyB5.tmp&Signature=jo38AOu1eCpbWSccBZ5xj9yMZiA%3D"
+    let result = await client.recognizeImageColor({
+        "Url": ctx.query.imageUrl
     }, {timeout: 10000}).then(function (data) {
-      console.log('Result:' + JSON.stringify(data));
-      ctx.body = JSON.stringify(data);
+        return data;
     }, function (err) {
-      console.log('Error:' + err);
-      ctx.body = err;
-
+        return err;
     });
+
+    if(result.Data.ColorTemplateList){
+      if(result.Data.ColorTemplateList.length > 0){
+        result.Data.ColorTemplateList.forEach((colorObj)=>{
+          colorObj.Color = '#' + colorObj.Color;
+        });
+        super.success(result.Data.ColorTemplateList);
+      }
+      else{
+        super.failure('无标签信息');
+      }
+    }
+    else{
+      super.failure('识别出错');
+    }
   }
 
   /*
@@ -218,16 +258,28 @@ class RecognizeController extends Controller {
       endpoint: 'https://imagerecog.cn-shanghai.aliyuncs.com'
     });
 
-    await client.detectImageElements({
-        "Url": "https://media-ai-system.oss-cn-shanghai.aliyuncs.com/12394550740.jpg?Expires=1582861102&OSSAccessKeyId=TMP.hhbiTs7PEvPrzAhqpr76ieQvSeqM9iGQNNJGoer6pMaH8F9pVtSWpbvZkDAdtid6H4cXPGxsJSaUxyb9tMc7w4oBsF5hvDYpKdzrDpao8BRA7aQvSuv2q2tx3hfyB5.tmp&Signature=a0oVw3Vq1%2F0zYKeEaho%2BIKPJMNY%3D"
+    let result = await client.detectImageElements({
+        "Url": ctx.query.imageUrl
     }, {timeout: 10000}).then(function (data) {
-      console.log('Result:' + JSON.stringify(data));
-      ctx.body = JSON.stringify(data);
+        return data;
     }, function (err) {
-      console.log('Error:' + err);
-      ctx.body = err;
-
+        return err;
     });
+    if(result.Data.Elements){
+      if(result.Data.Elements.length > 0){
+        let resultElements = result.Data.Elements;
+        resultElements.forEach((element) => {
+          element.Type = ctx.helper.getElementKeyName(element.Type);
+        });
+        super.success(resultElements);
+      }
+      else{
+        super.failure('无标签信息');
+      }
+    }
+    else{
+      super.failure('识别出错');
+    }
   }
 }
 

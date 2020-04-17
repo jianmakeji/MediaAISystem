@@ -6,7 +6,10 @@
 module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
-  
+  router.get('/recognize', controller.home.recognize);
+  router.get('/getSTSSignature/:fileType',controller.alioss.getSTSSignature);
+  router.get('/getUrlSignature',controller.alioss.getUrlSignature);
+
   router.get('/imageehan/makeSuperResolutionImage', controller.imageenhan.makeSuperResolutionImage);
   router.get('/imageehan/changeImageSize', controller.imageenhan.changeImageSize);
   router.get('/imageehan/extendImageStyle', controller.imageenhan.extendImageStyle);
@@ -20,4 +23,5 @@ module.exports = app => {
 
   router.get('/imageseg/segmentCommonImage', controller.imageseg.segmentCommonImage);
 
+  router.get('/user/createUser', controller.user.createUser);
 };

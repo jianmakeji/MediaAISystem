@@ -5,8 +5,14 @@ const Controller = require('egg').Controller;
 class HomeController extends Controller {
   async index() {
     const { ctx } = this;
-    ctx.body = 'hi, egg';
+    await ctx.render('index.html');
   }
+
+  async recognize() {
+    const { ctx } = this;
+    await ctx.render('recognize.html');
+  }
+
 
 }
 
