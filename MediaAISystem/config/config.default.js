@@ -17,7 +17,7 @@ module.exports = appInfo => {
 
   // add your middleware config here
   config.middleware = [];
-
+  /*
   config.mongoose = {
     client: {
       url: 'mongodb://192.168.3.110/example',
@@ -29,7 +29,7 @@ module.exports = appInfo => {
       // mongoose global plugins, expected a function or an array of function and options
       //plugins: [createdPlugin, [updatedPlugin, pluginOptions]],
     },
-  };
+  };*/
 
   config.view = {
     defaultViewEngine: 'nunjucks',
@@ -38,7 +38,7 @@ module.exports = appInfo => {
   config.assets = {
     publicPath: '/public/',
   };
-  
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',

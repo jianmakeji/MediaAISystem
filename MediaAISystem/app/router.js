@@ -24,4 +24,7 @@ module.exports = app => {
   router.get('/imageseg/segmentCommonImage', controller.imageseg.segmentCommonImage);
 
   router.get('/user/createUser', controller.user.createUser);
+
+  router.get('/user/htmlToPdf', controller.user.htmlToPdf);
+  router.get('/htmlpdf',controller.home.htmlPdf);
 };

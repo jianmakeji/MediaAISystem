@@ -13,7 +13,10 @@ class HomeController extends Controller {
     await ctx.render('recognize.html');
   }
 
-
+  async htmlPdf(){
+    const {ctx} = this;
+    await ctx.render('pdf-template.html');
+  }
 }
 
 module.exports = HomeController;
